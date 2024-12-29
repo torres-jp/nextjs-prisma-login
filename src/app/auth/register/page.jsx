@@ -9,16 +9,24 @@ function RegisterPage() {
   } = useForm()
 
   const onSubmit = handleSubmit(async (data) => {
+    if (data.password !== data.confirmPassword) {
+      return alert('Password does not')
+    }
+
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }),
     })
 
-    const resJson = await res.json()
-    console.log(resJson)
+    const resJSON = await res.json()
+    console.log(resJSON)
   })
 
   return (
@@ -91,7 +99,7 @@ function RegisterPage() {
           Confirm Password
         </label>
         <input
-          type='confirmPassword'
+          type='password'
           {...register('confirmPassword', {
             required: {
               value: true,
